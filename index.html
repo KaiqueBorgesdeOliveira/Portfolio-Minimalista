@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaique Borges - Desenvolvedor Backend</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/imagens/496bfd80-9f89-4448-98c3-791308112320.png" type="image/png">
+    <link rel="icon" href="/images/favicon-k.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -33,12 +33,10 @@
             <h2>Sobre Mim</h2>
             <div class="sobre-container">
                 <img src="/images/foto.jpeg" alt="Foto de Kaique Borges" class="foto-perfil">
-                <h3>
-                    Olá! Meu nome é <strong>Kaique Borges</strong>.
-                    <br><br>
-                    Seja muito bem-vindo ao meu portfólio!
-                    <br><br>
-                    Neste espaço, apresento alguns projetos que demonstram minhas habilidades e meu comprometimento com o desenvolvimento de software. Este é apenas o começo, e pretendo atualizá-lo constantemente. Atualmente, estou dedicando minha carreira integralmente ao <strong>desenvolvimento de software</strong>.
+                <h3 style="text-align: center; max-width: 600px; margin: 0 auto;">
+                    Olá! Meu nome é <strong>Kaique Borges</strong>.<br><br>
+                    Sou desenvolvedor backend apaixonado por tecnologia.<br><br>
+                    Aqui você encontra meus principais projetos e um pouco da minha trajetória no desenvolvimento de software.
                 </h3>
                 <a href="/Arquivo/Curriculo_Kaique_Desenvolvedor_Estilizado.pdf" download class="download-cv-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -80,9 +78,18 @@
                 <div class="carousel-container">
                     <!-- Slide 1 -->
                     <div class="carousel-slide">
-                        <video src="video1.mp4" controls poster="/imagens/projeto1-thumb.jpg">
-                            Seu navegador não suporta o elemento de vídeo.
-                        </video>
+                        <div class="code-editor">
+<pre><code class="language-java">// Exemplo de endpoint REST em Java Spring
+@RestController
+@RequestMapping("/games")
+public class GameController {
+    @GetMapping
+    public List<Game> findAll() {
+        return gameService.findAll();
+    }
+}
+</code></pre>
+                        </div>
                         <h3>DS-List</h3>
                         <p>Desenvolvimento Backend em Java: APIs RESTful com Spring, integração HTTP/JSON e arquitetura Cliente/Servidor. Projeto completo com banco de dados e deploy em produção.</p>
                         <a href="https://github.com/KaiqueBorgesdeOliveira/dslist" class="btn-projeto" target="_blank" rel="noopener noreferrer">
@@ -94,9 +101,16 @@
                     </div>
                     <!-- Slide 2 -->
                     <div class="carousel-slide">
-                        <video src="video2.mp4" controls poster="/imagens/projeto2-thumb.jpg">
-                            Seu navegador não suporta o elemento de vídeo.
-                        </video>
+                        <div class="code-editor">
+<pre><code class="language-python"># Exemplo de processamento de pagamento
+class Pagamento:
+    def processar(self, valor):
+        if valor > 0:
+            print(f"Pagamento de R${valor} realizado!")
+        else:
+            print("Valor inválido!")
+</code></pre>
+                        </div>
                         <h3>PagueSe</h3>
                         <p>Maquininha de Cartão - PagueSe! Este projeto está em desenvolvimento e tem como objetivo criar um sistema completo de processamento de pagamentos com interface moderna e segura.</p>
                         <a href="https://github.com/KaiqueBorgesdeOliveira/maquininha" class="btn-projeto" target="_blank" rel="noopener noreferrer">
@@ -108,9 +122,18 @@
                     </div>
                     <!-- Slide 3 -->
                     <div class="carousel-slide">
-                        <video src="video3.mp4" controls poster="/imagens/projeto3-thumb.jpg">
-                            Seu navegador não suporta o elemento de vídeo.
-                        </video>
+                        <div class="code-editor">
+<pre><code class="language-java">// Exemplo de entidade JPA
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    // getters e setters
+}
+</code></pre>
+                        </div>
                         <h3>Workshop Spring Boot 3 JPA</h3>
                         <p>Este projeto foi criado para demonstrar o uso de tecnologias Java modernas para construir um aplicativo robusto e escalável. Inclui mapeamento objeto-relacional e operações CRUD.</p>
                         <a href="https://github.com/KaiqueBorgesdeOliveira/workshop-springboot-jpa" class="btn-projeto" target="_blank" rel="noopener noreferrer">
@@ -122,9 +145,17 @@
                     </div>
                     <!-- Slide 4 -->
                     <div class="carousel-slide">
-                        <video src="video4.mp4" controls poster="/imagens/projeto4-thumb.jpg">
-                            Seu navegador não suporta o elemento de vídeo.
-                        </video>
+                        <div class="code-editor">
+<pre><code class="language-jsx">// Exemplo de componente React
+function App() {
+  return (
+    <div className="App">
+      <h1>Portfólio React + Vite</h1>
+    </div>
+  );
+}
+</code></pre>
+                        </div>
                         <h3>Portfólio React + Vite</h3>
                         <p>Este modelo fornece uma configuração mínima para que o React funcione no Vite com HMR e algumas regras ESLint. Projeto moderno com build otimizado e desenvolvimento ágil.</p>
                         <a href="https://github.com/KaiqueBorgesdeOliveira/Portifolio" class="btn-projeto" target="_blank" rel="noopener noreferrer">
