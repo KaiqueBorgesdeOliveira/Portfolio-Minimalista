@@ -24,17 +24,23 @@ function initializePortfolio() {
 function initSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = target.offsetTop - headerHeight - 20;
-                
+            const href = this.getAttribute('href');
+            if (href.length > 1 && document.querySelector(href)) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                const header = document.querySelector('header');
+                const headerHeight = header ? header.offsetHeight : 0;
+                // Pega a posição relativa ao topo do documento
+                const targetRect = target.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const targetPosition = targetRect.top + scrollTop - headerHeight - 20;
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
                 });
             }
+            // Se for só "#", não faz nada
         });
     });
 }
