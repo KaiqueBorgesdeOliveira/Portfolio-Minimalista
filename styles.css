@@ -7,26 +7,31 @@
 
 /* Variáveis do tema escuro minimalista */
 :root {
-    --bg-primary: #0a0a0a; /* Preto absoluto para fundo */
-    --bg-secondary: #16181d; /* Cinza bem escuro para contraste */
-    --bg-card: #181a20; /* Card quase preto */
-    --text-primary: #f5faff; /* Quase branco para contraste */
-    --text-secondary: #b0b8c9; /* Cinza claro para detalhes */
-    --text-muted: #5a6b8a; /* Azul acinzentado escuro */
-    --accent-primary: #00d4ff; /* Azul neon para destaques */
-    --accent-secondary: #2563eb; /* Azul forte para botões e links */
-    --border-color: #22242a; /* Cinza escuro para bordas */
-    --shadow-light: rgba(0, 212, 255, 0.08);
-    --shadow-medium: rgba(0, 212, 255, 0.18);
-    --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #2563eb 100%);
-    --gradient-secondary: linear-gradient(135deg, #1a2a4a 0%, #2563eb 100%);
+    --bg-primary: #0b1118;
+    --bg-secondary: #121922;
+    --bg-card: #171f2b;
+    --text-primary: #f3f7fd;
+    --text-secondary: #c2cad8;
+    --text-muted: #8693a8;
+    --accent-primary: #38bdf8;
+    --accent-secondary: #3b82f6;
+    --border-color: #283243;
+    --shadow-light: rgba(56, 189, 248, 0.12);
+    --shadow-medium: rgba(14, 165, 233, 0.22);
+    --shadow-strong: rgba(3, 8, 20, 0.45);
+    --gradient-primary: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+    --gradient-secondary: linear-gradient(135deg, #182435 0%, #2563eb 100%);
+    --radius-lg: 20px;
+    --radius-md: 12px;
 }
 
 /* Configurações gerais do body */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    background: var(--bg-primary);
+    background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 32%),
+        linear-gradient(180deg, #0b1118 0%, #0d141d 45%, #0b1118 100%);
     color: var(--text-primary);
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -39,9 +44,10 @@ header {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: var(--bg-primary);
+    background: rgba(11, 17, 24, 0.84);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(3, 8, 20, 0.18);
     padding: 1rem 0;
     transition: all 0.3s ease;
 }
@@ -53,6 +59,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 header h1 {
@@ -65,6 +72,32 @@ header h1 {
 }
 
 /* Navegação moderna */
+.menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.6rem;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    margin: 5px 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav ul {
     display: flex;
     list-style: none;
@@ -113,13 +146,49 @@ main {
     padding: 0 2rem;
 }
 
+main.single-board {
+    margin-top: 110px;
+    padding: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px var(--shadow-strong);
+    overflow: hidden;
+}
+
 /* Seções com design moderno */
 section {
     margin: 4rem 0;
-    padding: 3rem 0;
+    padding: 2.8rem 2.2rem;
     position: relative;
     background: var(--bg-card);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 18px 45px rgba(4, 10, 24, 0.28);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+main.single-board > section {
+    margin: 0;
+    padding: 2.6rem 2.2rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+main.single-board > section + section {
+    border-top: 1px solid var(--border-color);
+}
+
+main > section:hover {
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 22px 48px rgba(4, 10, 24, 0.34);
+}
+
+main.single-board > section:hover {
+    border-color: transparent;
+    box-shadow: none;
 }
 
 section h2 {
@@ -136,7 +205,7 @@ section h2 {
 /* Seção Sobre com layout moderno */
 #sobre {
     text-align: center;
-    padding: 4rem 0;
+    padding: 3rem 2.2rem;
 }
 
 .sobre-container {
@@ -154,14 +223,14 @@ section h2 {
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--accent-primary);
-    box-shadow: 0 20px 40px var(--shadow-medium);
+    box-shadow: 0 18px 40px rgba(6, 18, 38, 0.42);
     transition: all 0.4s ease;
     position: relative;
 }
 
 .foto-perfil:hover {
     transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 30px 60px var(--shadow-medium);
+    box-shadow: 0 24px 55px rgba(8, 24, 48, 0.48);
 }
 
 .sobre-container h3 {
@@ -185,7 +254,7 @@ section h2 {
     font-weight: 600;
     font-size: 1rem;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 30px var(--shadow-light);
+    box-shadow: 0 14px 30px rgba(28, 100, 242, 0.24);
     position: relative;
     overflow: hidden;
 }
@@ -207,7 +276,7 @@ section h2 {
 
 .download-cv-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px var(--shadow-medium);
+    box-shadow: 0 18px 36px rgba(28, 100, 242, 0.3);
 }
 
 /* Habilidades com ícones interativos */
@@ -227,7 +296,7 @@ section h2 {
 .linguagens li {
     width: 80px;
     height: 80px;
-    background: var(--bg-card);
+    background: rgba(255, 255, 255, 0.02);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -256,7 +325,7 @@ section h2 {
 
 .linguagens li:hover {
     transform: translateY(-10px) scale(1.1);
-    box-shadow: 0 20px 40px var(--shadow-light);
+    box-shadow: 0 18px 35px rgba(6, 18, 38, 0.32);
     border-color: var(--accent-primary);
 }
 
@@ -283,15 +352,17 @@ section h2 {
     position: relative;
     max-width: 900px;
     margin: 0 auto;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--bg-card);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 18px 42px rgba(4, 10, 24, 0.34);
 }
 
 .carousel-container {
     display: flex;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    touch-action: pan-y;
 }
 
 .carousel-slide {
@@ -363,7 +434,7 @@ section h2 {
 .btn-projeto:hover {
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px var(--shadow-light);
+    box-shadow: 0 14px 30px rgba(28, 100, 242, 0.24);
 }
 
 /* Botões do carrossel */
@@ -373,14 +444,15 @@ section h2 {
     transform: translateY(-50%);
     width: 50px;
     height: 50px;
-    background: rgba(0, 212, 255, 0.2);
+    background: rgba(16, 26, 39, 0.82);
     border: 2px solid var(--accent-primary);
     border-radius: 50%;
     color: var(--accent-primary);
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px rgba(3, 8, 20, 0.3);
     z-index: 10;
 }
 
@@ -398,25 +470,58 @@ section h2 {
     right: 20px;
 }
 
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1rem 1.2rem;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    background: var(--text-muted);
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.indicator.active {
+    background: var(--accent-primary);
+    transform: scale(1.15);
+}
+
 /* Seção de contato moderna */
 #contato-rede {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     margin: 4rem 0;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+#contato-rede:hover {
+    border-color: transparent;
+    box-shadow: none;
 }
 
 #contato, #redes-sociais {
     background: var(--bg-card);
     padding: 2.5rem;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    margin: 0;
 }
 
 #contato:hover, #redes-sociais:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 44px rgba(4, 10, 24, 0.32);
     border-color: var(--accent-primary);
 }
 
@@ -441,7 +546,7 @@ section h2 {
 
 #contato input {
     padding: 1rem;
-    background: var(--bg-secondary);
+    background: rgba(10, 16, 24, 0.75);
     border: 2px solid var(--border-color);
     border-radius: 12px;
     color: var(--text-primary);
@@ -452,7 +557,7 @@ section h2 {
 #contato input:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px var(--shadow-light);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
 }
 
 #contato button {
@@ -471,7 +576,7 @@ section h2 {
 
 #contato button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px var(--shadow-light);
+    box-shadow: 0 14px 30px rgba(28, 100, 242, 0.24);
 }
 
 /* Redes sociais modernas */
@@ -487,7 +592,7 @@ section h2 {
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: var(--bg-secondary);
+    background: rgba(10, 16, 24, 0.58);
     border-radius: 12px;
     transition: all 0.3s ease;
     border: 1px solid var(--border-color);
@@ -525,9 +630,10 @@ section h2 {
 #info-adicional {
     margin-top: 2rem;
     padding: 1.5rem;
-    background: var(--bg-secondary);
-    border-radius: 12px;
+    background: rgba(10, 16, 24, 0.6);
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 #info-adicional h3 {
@@ -543,10 +649,21 @@ section h2 {
 
 /* Seção mais informações */
 #mais-informacoes {
-    padding: 4rem 0;
+    padding: 3rem 0;
     background: var(--bg-secondary);
     margin: 4rem -2rem;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 46px rgba(4, 10, 24, 0.3);
+}
+
+main.single-board #mais-informacoes {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .mais-informacoes-wrapper {
@@ -558,7 +675,7 @@ section h2 {
 #roadmap, #sugestoes {
     background: var(--bg-card);
     padding: 2.5rem;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     margin-bottom: 3rem;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
@@ -577,7 +694,7 @@ section h2 {
 
 .roadmap-container ul {
     list-style: none;
-    display: flex;
+    background: rgba(10, 16, 24, 0.56);
     flex-direction: column;
     gap: 1rem;
 }
@@ -592,7 +709,7 @@ section h2 {
 
 .roadmap-container li:hover {
     transform: translateX(10px);
-    background: rgba(0, 212, 255, 0.1);
+    background: rgba(56, 189, 248, 0.08);
 }
 
 .roadmap-container li strong {
@@ -610,7 +727,7 @@ section h2 {
 
 #sugestoes input, #sugestoes textarea {
     padding: 1rem;
-    background: var(--bg-secondary);
+    background: rgba(10, 16, 24, 0.75);
     border: 2px solid var(--border-color);
     border-radius: 12px;
     color: var(--text-primary);
@@ -622,7 +739,7 @@ section h2 {
 #sugestoes input:focus, #sugestoes textarea:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px var(--shadow-light);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
 }
 
 #sugestoes textarea {
@@ -644,14 +761,14 @@ section h2 {
 
 .btn_enviar:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px var(--shadow-light);
+    box-shadow: 0 14px 30px rgba(28, 100, 242, 0.24);
 }
 
 /* Footer moderno */
 footer {
     text-align: center;
     padding: 3rem 0;
-    background: var(--bg-secondary);
+    background: #101722;
     color: var(--text-secondary);
     margin-top: 4rem;
     border-top: 1px solid var(--border-color);
@@ -660,24 +777,75 @@ footer {
 /* Responsividade */
 @media (max-width: 768px) {
     .header-container {
-        flex-direction: column;
-        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 0 1rem;
+    }
+
+    .menu-toggle {
+        display: block;
+        margin-left: auto;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    nav {
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    nav.open {
+        max-height: 340px;
+        opacity: 1;
     }
     
     nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        padding-top: 1rem;
+    }
+
+    nav a {
+        display: block;
+        text-align: center;
     }
     
     main {
         padding: 0 1rem;
-        margin-top: 120px;
+        margin-top: 90px;
+    }
+
+    main.single-board {
+        margin-top: 92px;
     }
     
     section {
         margin: 2rem 0;
-        padding: 2rem 0;
+        padding: 2rem 1.25rem;
+    }
+
+    main.single-board > section {
+        margin: 0;
+        padding: 1.9rem 1rem;
+    }
+
+    #contato-rede {
+        padding: 1rem;
     }
     
     section h2 {
@@ -706,10 +874,21 @@ footer {
     #contato-rede {
         grid-template-columns: 1fr;
         gap: 2rem;
+        margin: 2rem 0;
+        padding: 0.5rem;
     }
     
     .carousel-slide {
-        padding: 2rem 1rem;
+        padding: 1.5rem 1rem 1rem;
+    }
+
+    .carousel-slide h3 {
+        font-size: 1.35rem;
+    }
+
+    .carousel-slide p {
+        font-size: 1rem;
+        margin-bottom: 1.25rem;
     }
     
     .carousel-slide video {
@@ -717,21 +896,90 @@ footer {
     }
     
     .carousel-btn {
-        width: 40px;
-        height: 40px;
+        top: auto;
+        bottom: 56px;
+        transform: none;
+        width: 38px;
+        height: 38px;
         font-size: 1rem;
+    }
+
+    .carousel-btn:hover {
+        transform: scale(1.06);
     }
     
     .carousel-btn.prev {
-        left: 10px;
+        left: 8px;
     }
     
     .carousel-btn.next {
-        right: 10px;
+        right: 8px;
+    }
+
+    .btn-projeto {
+        width: 100%;
+        justify-content: center;
+        padding: 0.9rem 1rem;
+    }
+
+    .carousel-indicators {
+        padding: 0.75rem 1rem 0.95rem;
     }
     
     #mais-informacoes {
         margin: 2rem -1rem;
+        padding: 2rem 0;
+    }
+
+    #contato,
+    #redes-sociais,
+    #roadmap,
+    #sugestoes {
+        padding: 1.5rem;
+    }
+
+    .code-editor {
+        max-width: 100%;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .code-editor pre {
+        font-size: 0.85rem;
+        line-height: 1.45;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel {
+        border-radius: 14px;
+    }
+
+    .carousel-slide {
+        padding: 1.25rem 0.75rem 0.75rem;
+    }
+
+    .carousel-slide h3 {
+        font-size: 1.2rem;
+    }
+
+    .carousel-slide p {
+        font-size: 0.95rem;
+    }
+
+    .carousel-btn {
+        bottom: 48px;
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+    }
+
+    .code-editor {
+        padding: 0.85rem;
+    }
+
+    .code-editor pre {
+        font-size: 0.78rem;
     }
 }
 
@@ -758,7 +1006,7 @@ footer {
 
 /* Aplicar animações aos elementos quando entram na viewport */
 section {
-    animation: fadeInUp 0.8s ease-out;
+    animation: fadeInUp 0.5s ease-out;
 }
 
 /* Efeito de loading suave */
@@ -1219,9 +1467,9 @@ section {
 }
 
 .code-editor {
-    background: var(--bg-secondary);
+    background: rgba(10, 16, 24, 0.86);
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.2);
     padding: 1.5rem 1rem 1rem 1rem;
     margin-bottom: 1.5rem;
     text-align: left;
@@ -1243,7 +1491,7 @@ section {
 }
 .code-editor code {
     background: none;
-    color: var(--accent-primary);
+    color: #7dd3fc;
     font-family: inherit;
     font-size: inherit;
     padding: 0;

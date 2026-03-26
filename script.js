@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializePortfolio() {
     // Inicializar todos os módulos
+    initMobileMenu();
     initSmoothScrolling();
     initCarousel();
     initContactForm();
@@ -18,6 +19,37 @@ function initializePortfolio() {
     initTypingEffect();
     initRevealAnimations();
     initTooltips();
+}
+
+// Menu mobile
+function initMobileMenu() {
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('header nav');
+    const navLinks = document.querySelectorAll('header nav a');
+
+    if (!toggle || !nav) return;
+
+    function closeMenu() {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', () => {
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isExpanded));
+        nav.classList.toggle('open', !isExpanded);
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            nav.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
 }
 
 // Navegação suave
@@ -63,6 +95,7 @@ function initCarousel() {
         isTransitioning = true;
         const slideWidth = slides[0].clientWidth;
         carouselContainer.style.transform = `translateX(${-currentSlide * slideWidth}px)`;
+        updateIndicators();
         
         setTimeout(() => {
             isTransitioning = false;
@@ -154,6 +187,8 @@ function initCarousel() {
             indicator.classList.toggle('active', index === currentSlide);
         });
     }
+
+    updateIndicators();
 }
 
 // Formulário de contato WhatsApp
