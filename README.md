@@ -1,7 +1,5 @@
 # Portfólio - Kaique Borges
 
-![Preview do Projeto](./image/preview.png)
-
 ## 💻 Sobre o Projeto
 
 Portfolio pessoal desenvolvido para apresentar meus projetos e habilidades como desenvolvedor web. O site possui design responsivo e tema claro/escuro.
