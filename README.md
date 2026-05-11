@@ -1,45 +1,49 @@
 # Portfólio - Kaique Borges
 
-## 💻 Sobre o Projeto
+## Sobre o Projeto
 
-Portfolio pessoal desenvolvido para apresentar meus projetos e habilidades como desenvolvedor web. O site possui design responsivo e tema claro/escuro.
+Portfólio pessoal reposicionado para destacar foco profissional em Cloud e Infraestrutura, com ênfase na certificação AWS CLF-C02, administração de sistemas e automação.
 
-## 🛠️ Tecnologias Utilizadas
+## Áreas em Destaque
+
+- AWS (trilha CLF-C02)
+- Kubernetes
+- Docker
+- Linux
+- Windows Server
+- Automação com Python e Java
+
+## Funcionalidades
+
+- Design responsivo para desktop e mobile
+- Paleta visual verde, cinza e preto
+- Carrossel de projetos e laboratórios
+- Ícones de tecnologias e tooltips de competências
+- Formulário de contato com integração ao WhatsApp
+- Seção de roadmap de carreira voltada para Cloud e SysAdmin
+
+## Tecnologias do Site
 
 - HTML5
 - CSS3
 - JavaScript
-- Git
 
-## ✨ Funcionalidades
-
-- **Design Responsivo**: Adaptável a diferentes tamanhos de tela
-- **Tema Claro/Escuro**: Alternância entre temas com persistência da escolha do usuário
-- **Carrossel de Projetos**: Apresentação interativa dos projetos desenvolvidos
-- **Download de Currículo**: Botão para download do CV em PDF
-- **Seção de Tecnologias**: Exibição das principais tecnologias utilizadas
-- **Animações Suaves**: Transições e efeitos para melhor experiência do usuário
-
-## 🚀 Como Executar o Projeto
+## Como Executar
 
 ```bash
-# Clone este repositório
+# Clone o repositório
 git clone https://github.com/seu-usuario/portfolio.git
 
-# Acesse a pasta do projeto
+# Acesse a pasta
 cd portfolio
 
-# Abra o arquivo index.html no seu navegador
+# Abra o index.html no navegador
 ```
 
-## 📱 Layout Responsivo
+## Estrutura
 
-O projeto é totalmente responsivo e se adapta aos seguintes breakpoints:
-
-- Desktop (1400px+)
-- Laptop (992px)
-- Tablet (768px)
-- Mobile (576px)
-- Mobile Small (360px)
-
-## 📂 Estrutura do Projeto
+- index.html
+- styles.css
+- script.js
+- images/
+- Arquivo/
