@@ -9,14 +9,10 @@ function initializePortfolio() {
     // Inicializar todos os módulos
     initMobileMenu();
     initSmoothScrolling();
-    initCarousel();
     initContactForm();
     initAnimations();
-    initParallaxEffects();
-    initCustomCursor();
-    initParticleBackground();
     initHeaderEffects();
-    initTypingEffect();
+    initSectionReveal();
     initRevealAnimations();
     initTooltips();
 }
@@ -240,7 +236,7 @@ function showNotification(message, type = 'info') {
         zIndex: '10000',
         transform: 'translateX(100%)',
         transition: 'transform 0.3s ease',
-        backgroundColor: type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'
+        backgroundColor: type === 'success' ? '#16a34a' : type === 'error' ? '#dc2626' : '#22c55e'
     });
     
     document.body.appendChild(notification);
@@ -264,14 +260,6 @@ function initAnimations() {
     // Animação para ícones de tecnologia
     document.querySelectorAll('.linguagens li').forEach((item, index) => {
         item.style.animationDelay = `${index * 0.1}s`;
-        
-        item.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.1) rotate(5deg)';
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1) rotate(0deg)';
-        });
     });
 
     // Animação para cards de projeto
@@ -432,11 +420,26 @@ function initTypingEffect() {
     });
 }
 
+// Inicializar scroll reveal das seções
+function initSectionReveal() {
+    // Garantir que seções ocultas começam invisíveis
+    const hiddenSections = document.querySelectorAll('main.single-board > section.section-hidden');
+    hiddenSections.forEach(section => {
+        section.classList.remove('revealed');
+    });
+    
+    // Seção primeira (sobre) começa visível
+    const aboutSection = document.getElementById('sobre');
+    if (aboutSection) {
+        aboutSection.classList.add('revealed');
+    }
+}
+
 // Animações de revelação
 function initRevealAnimations() {
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.05,
+        rootMargin: '50px 0px 50px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -457,9 +460,8 @@ function initRevealAnimations() {
         });
     }, observerOptions);
 
-    // Observar seções
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.add('reveal-section');
+    // Observar apenas seções diretas do single-board
+    document.querySelectorAll('main.single-board > section').forEach(section => {
         observer.observe(section);
     });
     
