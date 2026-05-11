@@ -2,11 +2,16 @@
 
 ## Sobre o Projeto
 
-Portfólio pessoal reposicionado para destacar foco profissional em Cloud e Infraestrutura, com ênfase na certificação AWS CLF-C02, administração de sistemas e automação.
+Portfólio pessoal com foco em Cloud, SysAdmin e trilha AWS CLF-C02.
+O projeto foi redesenhado com linguagem visual minimalista e metáfora de hardware:
+
+- seção de perfil com aparência de monitor
+- seção de skills com aparência de teclas mecânicas
+- tema profissional em verde, preto e cinza
 
 ## Áreas em Destaque
 
-- AWS (trilha CLF-C02)
+- AWS (CLF-C02)
 - Kubernetes
 - Docker
 - Linux
@@ -15,32 +20,35 @@ Portfólio pessoal reposicionado para destacar foco profissional em Cloud e Infr
 
 ## Funcionalidades
 
-- Design responsivo para desktop e mobile
-- Paleta visual verde, cinza e preto
-- Carrossel de projetos e laboratórios
-- Ícones de tecnologias e tooltips de competências
-- Formulário de contato com integração ao WhatsApp
-- Seção de roadmap de carreira voltada para Cloud e SysAdmin
+- Interface responsiva para desktop, tablet e mobile
+- Seção Perfil Profissional em moldura de monitor com base dedicada
+- Skills em layout de teclado com efeito visual de tecla pressionada
+- Seção de projetos em grade com estética de mini monitores
+- Revelação suave de seções ao scroll com IntersectionObserver
+- Seção única de contato com redes sociais e formulário de feedback
+- Favicon verde alinhado ao novo tema visual
 
-## Tecnologias do Site
+## Tecnologias
 
 - HTML5
 - CSS3
-- JavaScript
+- JavaScript (vanilla)
+- Font Awesome (ícones)
+- Google Fonts (IBM Plex Sans e JetBrains Mono)
 
 ## Como Executar
 
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/portfolio.git
+1. Clone o repositório:
 
-# Acesse a pasta
-cd portfolio
+	git clone git@github.com:KaiqueBorgesdeOliveira/Portfolio-Minimalista.git
 
-# Abra o index.html no navegador
-```
+2. Acesse a pasta do projeto:
 
-## Estrutura
+	cd Portfolio-Minimalista
+
+3. Abra o arquivo index.html no navegador.
+
+## Estrutura do Projeto
 
 - index.html
 - styles.css
