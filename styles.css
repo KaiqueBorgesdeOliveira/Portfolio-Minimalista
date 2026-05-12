@@ -1042,28 +1042,35 @@ footer {
         min-height: 80px;
     }
     
+    #projetos {
+        padding: 2.5rem 1rem;
+    }
+
     .projects-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
-        max-width: 500px;
+        gap: 1.5rem;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     .project-card {
-        padding: 0.95rem;
+        padding: 0.9rem;
+        margin-bottom: 0.5rem;
     }
 
     .project-card::before {
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
-        border: 6px solid #1a1f1c;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+        border: 5px solid #1a1f1c;
+        border-radius: 14px;
     }
 
     .project-card::after {
-        bottom: -14px;
-        width: 50%;
-        height: 6px;
+        bottom: -12px;
+        width: 45%;
+        height: 5px;
     }
 
     .project-card h3 {
@@ -1091,44 +1098,91 @@ footer {
 
     .code-editor {
         max-width: 100%;
-        padding: 1rem;
+        padding: 0.9rem;
         margin-bottom: 1rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .code-editor pre {
-        font-size: 0.85rem;
-        line-height: 1.45;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    .code-editor code {
+        word-break: break-word;
+        white-space: pre-wrap;
     }
 }
 
 @media (max-width: 480px) {
+    #projetos {
+        padding: 2rem 0.8rem;
+    }
+
+    .projects-grid {
+        gap: 1.2rem;
+        margin: 0 auto;
+    }
+
     .project-card {
-        border-radius: 12px;
+        border-radius: 11px;
         padding: 0.75rem;
+        margin-bottom: 0.3rem;
     }
 
     .project-card::before {
-        top: -8px;
-        left: -8px;
-        right: -8px;
-        bottom: -8px;
-        border: 5px solid #1a1f1c;
-        border-radius: 16px;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border: 4px solid #1a1f1c;
+        border-radius: 13px;
     }
 
     .project-card::after {
-        bottom: -12px;
-        width: 45%;
-        height: 5px;
-        border-radius: 0 0 6px 6px;
+        bottom: -10px;
+        width: 40%;
+        height: 4px;
+        border-radius: 0 0 5px 5px;
     }
 
     .project-card h3 {
-        font-size: 1.12rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .project-card p {
+        font-size: 0.9rem;
+        margin-bottom: 0.9rem;
     }
 
     .project-badge {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.65rem;
+    }
+
+    .btn-projeto {
+        width: 100%;
+        padding: 0.8rem 0.9rem;
+        font-size: 0.9rem;
+        gap: 0.4rem;
+    }
+
+    .btn-projeto svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .code-editor {
+        padding: 0.8rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .code-editor pre {
+        font-size: 0.75rem;
+        line-height: 1.35;
     }
     
     .linguagens {
