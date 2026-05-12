@@ -15,6 +15,228 @@ function initializePortfolio() {
     initSectionReveal();
     initRevealAnimations();
     initTooltips();
+    initCertificateVault();
+}
+
+function initCertificateVault() {
+    const toggle = document.querySelector('.certificados-dock-toggle');
+    const panel = document.querySelector('.certificados-hub');
+    const closeButton = document.querySelector('.certificados-close');
+    const uploadButton = document.querySelector('.certificados-upload');
+    const fileInput = document.querySelector('.certificados-input');
+    const list = document.querySelector('.certificados-lista-dinamica');
+    const ownerTools = document.querySelector('[data-owner-only]');
+
+    if (!toggle || !panel || !closeButton || !list) return;
+
+    const isLocalOwner = window.location.protocol === 'file:' || /localhost|127\.0\.0\.1/.test(window.location.hostname);
+    const dbName = 'portfolio-certificados-db';
+    const storeName = 'certificados';
+
+    if (!isLocalOwner) {
+        toggle.hidden = true;
+        panel.hidden = true;
+        return;
+    }
+
+    function setPanelState(isOpen) {
+        panel.classList.toggle('is-open', isOpen);
+        panel.setAttribute('aria-hidden', String(!isOpen));
+        toggle.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    toggle.addEventListener('click', () => {
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        setPanelState(!isOpen);
+    });
+
+    closeButton.addEventListener('click', () => setPanelState(false));
+
+    document.addEventListener('click', (event) => {
+        const clickedInside = panel.contains(event.target) || toggle.contains(event.target);
+        if (!clickedInside) {
+            setPanelState(false);
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            setPanelState(false);
+        }
+    });
+
+    if (!window.indexedDB) {
+        list.innerHTML = `
+            <li class="certificados-empty">
+                <strong>Seu navegador não suporta o cofre local</strong>
+                <span>Use um navegador moderno para salvar PDFs dos certificados neste dispositivo.</span>
+            </li>
+        `;
+        if (ownerTools) {
+            ownerTools.hidden = true;
+        }
+        return;
+    }
+
+    function openDatabase() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(dbName, 1);
+
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                if (!db.objectStoreNames.contains(storeName)) {
+                    db.createObjectStore(storeName, { keyPath: 'id' });
+                }
+            };
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async function getAllCertificates() {
+        const db = await openDatabase();
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(storeName, 'readonly');
+            const store = transaction.objectStore(storeName);
+            const request = store.getAll();
+
+            request.onsuccess = () => resolve(request.result.sort((a, b) => b.createdAt - a.createdAt));
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async function saveCertificate(file) {
+        const db = await openDatabase();
+        const certificate = {
+            id: `${Date.now()}-${file.name}`,
+            name: file.name.replace(/\.pdf$/i, ''),
+            fileName: file.name,
+            size: file.size,
+            createdAt: Date.now(),
+            blob: file
+        };
+
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(storeName, 'readwrite');
+            const store = transaction.objectStore(storeName);
+            const request = store.put(certificate);
+            request.onsuccess = () => resolve(certificate);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async function deleteCertificate(id) {
+        const db = await openDatabase();
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(storeName, 'readwrite');
+            const store = transaction.objectStore(storeName);
+            const request = store.delete(id);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024 * 1024) {
+            return `${Math.round(bytes / 1024)} KB`;
+        }
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    async function renderCertificates() {
+        try {
+            const certificates = await getAllCertificates();
+
+            if (!certificates.length) {
+                list.innerHTML = `
+                    <li class="certificados-empty">
+                        <strong>Nenhum certificado salvo ainda</strong>
+                        <span>Quando concluir um curso, clique no ícone da caixa e anexe o PDF para manter seu acervo privado.</span>
+                    </li>
+                `;
+                return;
+            }
+
+            list.innerHTML = '';
+
+            certificates.forEach((certificate) => {
+                const item = document.createElement('li');
+                const pdfUrl = URL.createObjectURL(certificate.blob);
+                const createdAt = new Date(certificate.createdAt).toLocaleDateString('pt-BR');
+
+                item.innerHTML = `
+                    <strong>${certificate.name}</strong>
+                    <span>${certificate.fileName} • ${formatFileSize(certificate.size)} • salvo em ${createdAt}</span>
+                    <div class="certificados-item-actions">
+                        <a href="${pdfUrl}" class="certificados-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                            Abrir PDF
+                        </a>
+                        ${isLocalOwner ? `
+                            <button class="certificados-remove" type="button" data-id="${certificate.id}">
+                                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                                Remover
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+
+                list.appendChild(item);
+            });
+        } catch (error) {
+            console.error('Erro ao renderizar certificados:', error);
+            list.innerHTML = `
+                <li class="certificados-empty">
+                    <strong>Não foi possível carregar o cofre</strong>
+                    <span>Tente recarregar a página para acessar seus certificados locais.</span>
+                </li>
+            `;
+        }
+    }
+
+    list.addEventListener('click', async (event) => {
+        const removeButton = event.target.closest('.certificados-remove');
+        if (!removeButton) return;
+
+        try {
+            await deleteCertificate(removeButton.dataset.id);
+            await renderCertificates();
+            showNotification('Certificado removido do cofre local.', 'success');
+        } catch (error) {
+            console.error('Erro ao remover certificado:', error);
+            showNotification('Não foi possível remover o certificado.', 'error');
+        }
+    });
+
+    if (isLocalOwner && uploadButton && fileInput) {
+        uploadButton.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', async (event) => {
+            const [file] = event.target.files || [];
+            if (!file) return;
+
+            if (file.type !== 'application/pdf') {
+                showNotification('Selecione apenas arquivos PDF.', 'error');
+                fileInput.value = '';
+                return;
+            }
+
+            try {
+                await saveCertificate(file);
+                await renderCertificates();
+                setPanelState(true);
+                showNotification('PDF salvo no cofre local.', 'success');
+            } catch (error) {
+                console.error('Erro ao salvar certificado:', error);
+                showNotification('Não foi possível salvar o PDF.', 'error');
+            }
+
+            fileInput.value = '';
+        });
+    }
+
+    renderCertificates();
 }
 
 // Menu mobile

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
     <meta name="description" content="Portfólio de Kaique Borges com foco em AWS CLF-C02, engenharia de sistemas, administração de servidores e automação.">
     <meta name="keywords" content="aws, clf-c02, kubernetes, docker, linux, windows server, automacao, python, java, sysadmin, cloud">
+    <meta name="theme-color" content="#E95420">
 </head>
 <body>
     <header>
@@ -260,6 +261,40 @@ def health_check(hosts):
             </div>
         </section>
     </main>
+
+    <button class="certificados-dock-toggle" type="button" aria-label="Abrir cofre de certificados" aria-expanded="false" aria-controls="certificados-hub-panel">
+        <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
+        <span>Cofre</span>
+    </button>
+
+    <aside class="certificados-hub" id="certificados-hub-panel" aria-label="Painel de certificados" aria-hidden="true">
+        <div class="certificados-hub-head">
+            <div>
+                <span class="certificados-hub-badge">Privado local</span>
+                <h3>Cofre de Certificados</h3>
+            </div>
+            <button class="certificados-close" type="button" aria-label="Fechar cofre de certificados">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <p class="certificados-hub-copy">Guarde PDFs dos cursos concluídos neste navegador. Assim você mantém sua comprovação organizada sem deixar um upload aberto para visitantes.</p>
+
+        <div class="certificados-owner-tools" data-owner-only>
+            <input class="certificados-input" type="file" accept="application/pdf" hidden>
+            <button class="certificados-upload" type="button">
+                <i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i>
+                Adicionar PDF
+            </button>
+            <span class="certificados-owner-note">Disponível apenas no seu ambiente local.</span>
+        </div>
+
+        <ul class="certificados-lista certificados-lista-dinamica">
+            <li class="certificados-empty">
+                <strong>Nenhum certificado salvo ainda</strong>
+                <span>Quando concluir um curso, clique no ícone da caixa e anexe o PDF para manter seu acervo privado.</span>
+            </li>
+        </ul>
+    </aside>
 
     <footer>
         <p>&copy; 2026 Kaique Borges de Oliveira. Todos os direitos reservados.</p>
