@@ -44,15 +44,32 @@ function initCertificateVault() {
     const isLocalOwner = window.location.protocol === 'file:' || /localhost|127\.0\.0\.1/.test(window.location.hostname);
     const dbName = 'portfolio-certificados-db';
     const storeName = 'certificados';
-    const publicCertificates = [
-        {
-            id: 'public-curriculo',
-            name: 'Curriculo Kaique Borges',
-            fileName: 'curriculo-kaique-borges-de-oliveira.pdf',
-            url: 'Arquivo/curriculo-kaique-borges-de-oliveira.pdf',
-            source: 'public'
-        }
+    const publicCertificateFiles = [
+        'AWS Prep Plan Overview CLF-C02.pdf',
+        'curriculo-kaique-borges-de-oliveira.pdf',
+        'DevLinux.pdf',
+        'dio- Explorando o Serviço de Aplicativo do Azure.pdf',
+        'Excel.pdf',
+        'Github.pdf',
+        'Kaique Borge De Oliveira.pdf',
+        'Kaique Borges De Oliveira - Curso Arquitetura CSS_ descomplicando os problemas - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso HTML e CSS_ responsividade com mobile-first - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso JavaScript_ explorando a linguagem - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso Kubernetes_ Deployments, Volumes e Escalabilidade - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso Quality Assurance_ plano de testes e gestão de bugs - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso React_ comece seu projeto full stack - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso React_ escrevendo com Typescript - Alura.pdf',
+        'Kaique Borges De Oliveira - Curso React_ otimizando a performance - Alura.pdf',
+        'OraclePLSQL.pdf',
+        'Terminal_Ubuntu.pdf'
     ];
+    const publicCertificates = publicCertificateFiles.map((fileName) => ({
+        id: `public-${fileName}`,
+        name: fileName.replace(/\.pdf$/i, '').replace(/[_-]+/g, ' ').trim(),
+        fileName,
+        url: `Arquivo/${encodeURIComponent(fileName)}`,
+        source: 'public'
+    }));
     let searchTerm = '';
     let sortMode = 'recent';
 
