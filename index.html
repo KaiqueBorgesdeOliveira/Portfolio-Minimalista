@@ -288,6 +288,16 @@ def health_check(hosts):
             <span class="certificados-owner-note">Disponível apenas no seu ambiente local.</span>
         </div>
 
+        <div class="certificados-filtros" aria-label="Controles de busca e ordenacao de certificados">
+            <input class="certificados-search" type="search" placeholder="Buscar certificado..." aria-label="Buscar certificado por nome">
+            <select class="certificados-sort" aria-label="Ordenar certificados">
+                <option value="recent">Mais recentes</option>
+                <option value="oldest">Mais antigos</option>
+                <option value="name-asc">Nome A-Z</option>
+                <option value="name-desc">Nome Z-A</option>
+            </select>
+        </div>
+
         <ul class="certificados-lista certificados-lista-dinamica">
             <li class="certificados-empty">
                 <strong>Nenhum certificado salvo ainda</strong>

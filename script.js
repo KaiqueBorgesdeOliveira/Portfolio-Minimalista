@@ -5,17 +5,26 @@ document.addEventListener('DOMContentLoaded', function() {
     initializePortfolio();
 });
 
+function safeInit(moduleName, initializer) {
+    try {
+        initializer();
+    } catch (error) {
+        console.error(`Erro ao inicializar modulo ${moduleName}:`, error);
+    }
+}
+
 function initializePortfolio() {
-    // Inicializar todos os módulos
-    initMobileMenu();
-    initSmoothScrolling();
-    initContactForm();
-    initAnimations();
-    initHeaderEffects();
-    initSectionReveal();
-    initRevealAnimations();
-    initTooltips();
-    initCertificateVault();
+    // Inicializar cofres e navegacao principal com prioridade.
+    // Assim, se algum modulo secundario falhar, o clique do cofre continua funcionando.
+    safeInit('certificate-vault', initCertificateVault);
+    safeInit('mobile-menu', initMobileMenu);
+    safeInit('smooth-scrolling', initSmoothScrolling);
+    safeInit('contact-form', initContactForm);
+    safeInit('animations', initAnimations);
+    safeInit('header-effects', initHeaderEffects);
+    safeInit('section-reveal', initSectionReveal);
+    safeInit('reveal-animations', initRevealAnimations);
+    safeInit('tooltips', initTooltips);
 }
 
 function initCertificateVault() {
@@ -26,17 +35,33 @@ function initCertificateVault() {
     const fileInput = document.querySelector('.certificados-input');
     const list = document.querySelector('.certificados-lista-dinamica');
     const ownerTools = document.querySelector('[data-owner-only]');
+    const hubCopy = document.querySelector('.certificados-hub-copy');
+    const searchInput = document.querySelector('.certificados-search');
+    const sortSelect = document.querySelector('.certificados-sort');
 
     if (!toggle || !panel || !closeButton || !list) return;
 
     const isLocalOwner = window.location.protocol === 'file:' || /localhost|127\.0\.0\.1/.test(window.location.hostname);
     const dbName = 'portfolio-certificados-db';
     const storeName = 'certificados';
+    const publicCertificates = [
+        {
+            id: 'public-curriculo',
+            name: 'Curriculo Kaique Borges',
+            fileName: 'curriculo-kaique-borges-de-oliveira.pdf',
+            url: 'Arquivo/curriculo-kaique-borges-de-oliveira.pdf',
+            source: 'public'
+        }
+    ];
+    let searchTerm = '';
+    let sortMode = 'recent';
 
-    if (!isLocalOwner) {
-        toggle.hidden = true;
-        panel.hidden = true;
-        return;
+    if (!isLocalOwner && ownerTools) {
+        ownerTools.hidden = true;
+    }
+
+    if (!isLocalOwner && hubCopy) {
+        hubCopy.textContent = 'Nesta versao publicada voce pode visualizar e baixar certificados publicos. O envio de PDFs fica disponivel apenas no ambiente local.';
     }
 
     function setPanelState(isOpen) {
@@ -65,17 +90,73 @@ function initCertificateVault() {
         }
     });
 
-    if (!window.indexedDB) {
+    const supportsLocalDb = !!window.indexedDB;
+
+    function normalizeText(value) {
+        return (value || '')
+            .toString()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim();
+    }
+
+    function getCertificateTimestamp(certificate) {
+        return Number(certificate.createdAt || 0);
+    }
+
+    function applyFiltersAndSort(certificates) {
+        const normalizedTerm = normalizeText(searchTerm);
+
+        const filtered = certificates.filter((certificate) => {
+            if (!normalizedTerm) return true;
+            const haystack = normalizeText(`${certificate.name} ${certificate.fileName}`);
+            return haystack.includes(normalizedTerm);
+        });
+
+        const collator = new Intl.Collator('pt-BR', { sensitivity: 'base' });
+        const sorted = [...filtered].sort((a, b) => {
+            if (sortMode === 'oldest') {
+                return getCertificateTimestamp(a) - getCertificateTimestamp(b);
+            }
+
+            if (sortMode === 'name-asc') {
+                return collator.compare(a.name, b.name);
+            }
+
+            if (sortMode === 'name-desc') {
+                return collator.compare(b.name, a.name);
+            }
+
+            return getCertificateTimestamp(b) - getCertificateTimestamp(a);
+        });
+
+        return sorted;
+    }
+
+    function renderNoResultsState() {
         list.innerHTML = `
             <li class="certificados-empty">
-                <strong>Seu navegador não suporta o cofre local</strong>
-                <span>Use um navegador moderno para salvar PDFs dos certificados neste dispositivo.</span>
+                <strong>Nenhum resultado para a busca</strong>
+                <span>Limpe ou ajuste os filtros para encontrar seus certificados.</span>
             </li>
         `;
-        if (ownerTools) {
-            ownerTools.hidden = true;
+    }
+
+    function bindFilterControls(renderer) {
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                searchTerm = searchInput.value || '';
+                renderer();
+            });
         }
-        return;
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', () => {
+                sortMode = sortSelect.value;
+                renderer();
+            });
+        }
     }
 
     function openDatabase() {
@@ -144,11 +225,60 @@ function initCertificateVault() {
         return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     }
 
-    async function renderCertificates() {
-        try {
-            const certificates = await getAllCertificates();
+    function renderPublicCertificatesOnly() {
+        const certificates = applyFiltersAndSort(publicCertificates);
 
-            if (!certificates.length) {
+        if (!publicCertificates.length) {
+            list.innerHTML = `
+                <li class="certificados-empty">
+                    <strong>Nenhum certificado publico disponivel</strong>
+                    <span>Adicione PDFs na pasta Arquivo e publique o site para exibi-los aqui.</span>
+                </li>
+            `;
+            return;
+        }
+
+        if (!certificates.length) {
+            renderNoResultsState();
+            return;
+        }
+
+        list.innerHTML = '';
+
+        certificates.forEach((certificate) => {
+            const item = document.createElement('li');
+
+            item.innerHTML = `
+                <strong>${certificate.name}</strong>
+                <span>${certificate.fileName} • disponivel para visualizacao e download</span>
+                <div class="certificados-item-actions">
+                    <a href="${certificate.url}" class="certificados-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                        Abrir PDF
+                    </a>
+                    <a href="${certificate.url}" class="certificados-link" download="${certificate.fileName}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                        Baixar
+                    </a>
+                </div>
+            `;
+
+            list.appendChild(item);
+        });
+    }
+
+    async function renderCertificates() {
+        if (!isLocalOwner || !supportsLocalDb) {
+            renderPublicCertificatesOnly();
+            return;
+        }
+
+        try {
+            const localCertificates = await getAllCertificates();
+            const allCertificates = [...localCertificates, ...publicCertificates];
+            const certificates = applyFiltersAndSort(allCertificates);
+
+            if (!allCertificates.length) {
                 list.innerHTML = `
                     <li class="certificados-empty">
                         <strong>Nenhum certificado salvo ainda</strong>
@@ -158,22 +288,39 @@ function initCertificateVault() {
                 return;
             }
 
+            if (!certificates.length) {
+                renderNoResultsState();
+                return;
+            }
+
             list.innerHTML = '';
 
             certificates.forEach((certificate) => {
                 const item = document.createElement('li');
-                const pdfUrl = URL.createObjectURL(certificate.blob);
-                const createdAt = new Date(certificate.createdAt).toLocaleDateString('pt-BR');
+                const isPublicCertificate = certificate.source === 'public';
+                const pdfUrl = isPublicCertificate
+                    ? certificate.url
+                    : URL.createObjectURL(certificate.blob);
+                const createdAt = isPublicCertificate
+                    ? 'publicado'
+                    : new Date(certificate.createdAt).toLocaleDateString('pt-BR');
+                const details = isPublicCertificate
+                    ? `${certificate.fileName} • certificado publico`
+                    : `${certificate.fileName} • ${formatFileSize(certificate.size)} • salvo em ${createdAt}`;
 
                 item.innerHTML = `
                     <strong>${certificate.name}</strong>
-                    <span>${certificate.fileName} • ${formatFileSize(certificate.size)} • salvo em ${createdAt}</span>
+                    <span>${details}</span>
                     <div class="certificados-item-actions">
                         <a href="${pdfUrl}" class="certificados-link" target="_blank" rel="noopener noreferrer">
                             <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
                             Abrir PDF
                         </a>
-                        ${isLocalOwner ? `
+                        <a href="${pdfUrl}" class="certificados-link" download="${certificate.fileName}">
+                            <i class="fa-solid fa-download" aria-hidden="true"></i>
+                            Baixar
+                        </a>
+                        ${isLocalOwner && !isPublicCertificate ? `
                             <button class="certificados-remove" type="button" data-id="${certificate.id}">
                                 <i class="fa-solid fa-trash" aria-hidden="true"></i>
                                 Remover
@@ -196,6 +343,8 @@ function initCertificateVault() {
     }
 
     list.addEventListener('click', async (event) => {
+        if (!isLocalOwner || !supportsLocalDb) return;
+
         const removeButton = event.target.closest('.certificados-remove');
         if (!removeButton) return;
 
@@ -209,7 +358,7 @@ function initCertificateVault() {
         }
     });
 
-    if (isLocalOwner && uploadButton && fileInput) {
+    if (isLocalOwner && supportsLocalDb && uploadButton && fileInput) {
         uploadButton.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', async (event) => {
@@ -236,6 +385,11 @@ function initCertificateVault() {
         });
     }
 
+    if (isLocalOwner && !supportsLocalDb && ownerTools) {
+        ownerTools.hidden = true;
+    }
+
+    bindFilterControls(renderCertificates);
     renderCertificates();
 }
 
